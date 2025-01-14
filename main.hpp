@@ -6,22 +6,22 @@
 
 using namespace std;
 
-int 
-
-typedef struct row {
-
-}s_Row;
-
-
-typedef struct table {
-    vector<s_Row> *
-}s_Table;
-
 typedef struct student{
     int id;
     string name;
     string lastName;
     int age;
-
+    student* leftChild;
+    student* rightChild;
+    
 } s_Student;
+
+
+void create_new_random_student(s_Student *student, vector<s_Student> *students);
+
+void print_students(const vector<s_Student> &students);
+
+
+
+
 #endif
