@@ -21,6 +21,7 @@ int main(void) {
         cout << "5. Search by age" << endl;
         cout << "6. Print students" << endl;
         cout << "7. Remove student" << endl;
+        cout << "8. Remove student by age" << endl;
         cout << "0. Exit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
@@ -57,8 +58,13 @@ int main(void) {
                 break;
             case 7:
                 cout << "Enter the last of the students you want to remove: ";
-                cin >> lastName;
-                deleteByLastName(ROOT, lastName, students);
+                cin >> id;
+                deleteById(ROOT, id, students);
+                break;
+            case 8:
+                cout << "Enter the age of the students you want to remove: ";
+                cin >> age;
+                deleteByAge(ROOT, age, students);
                 break;
             case 0:
                 return 0;

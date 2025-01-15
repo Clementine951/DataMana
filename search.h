@@ -65,52 +65,125 @@ void lastNameSearch(s_Student *student, string lastName){
     return;
 }
 
-void deleteByLastName(s_Student *root, const string lastName, vector<s_Student> *students) {
+void deleteById(s_Student*& root, int id, vector<s_Student> *students) {
     if (!root) {
-        return; 
+        return; // Base case: the tree is empty or we've reached a leaf node.
     }
 
-    deleteByLastName(root->leftChild, lastName, students);
-    deleteByLastName(root->rightChild, lastName, students);
-
-    if (root->lastName == lastName) {
+    if (id < root->id) {
+        // Traverse left subtree.
+        deleteById(root->leftChild, id, students);
+    } else if (id > root->id) {
+        // Traverse right subtree.
+        deleteById(root->rightChild, id, students);
+    } else {
+        // Node with matching ID found.
         cout << "Deleting student: " << root->name << " " << root->lastName << " " << root->age << endl;
 
-        // No children
+        // Remove from the vector.
+        auto it = std::remove_if(students->begin(), students->end(), [id](const s_Student& student) {
+            return student.id == id;
+        });
+        students->erase(it, students->end());
+
+        // Handle node deletion (three cases).
+
+        // Case 1: No children.
         if (!root->leftChild && !root->rightChild) {
-            students->erase(students->begin() + root->id);
             delete root;
-            root = nullptr; 
+            root = nullptr; // Update parent's pointer.
         }
 
-        // One child
+        // Case 2: One child.
         else if (!root->leftChild) {
-            s_Student *tmp = root;
-            root = root->rightChild; 
-            students->erase(students->begin() + root->id);
-            delete tmp;
+            s_Student* temp = root;
+            root = root->rightChild; // Update parent's pointer.
+            delete temp;
         } else if (!root->rightChild) {
-            s_Student *tmp = root;
-            root = root->leftChild; 
-            students->erase(students->begin() + root->id);
-            delete tmp;
+            s_Student* temp = root;
+            root = root->leftChild; // Update parent's pointer.
+            delete temp;
         }
 
-        // Two children
+        // Case 3: Two children.
         else {
-            s_Student *successor = root->rightChild;
+            // Find the in-order successor (smallest in the right subtree).
+            s_Student* successor = root->rightChild;
             while (successor->leftChild) {
                 successor = successor->leftChild;
             }
 
+            // Replace root's data with the successor's data.
             root->id = successor->id;
             root->name = successor->name;
             root->lastName = successor->lastName;
             root->age = successor->age;
 
-            deleteByLastName(root->rightChild, successor->lastName, students);
+            // Delete the in-order successor.
+            deleteById(root->rightChild, successor->id, students);
         }
     }
 }
+
+void deleteByAge(s_Student*& root, int age, vector<s_Student> *students) {
+    if (!root) {
+        return; // Base case: the tree is empty or we've reached a leaf node.
+    }
+
+    if (age < root->age) {
+        // Traverse left subtree.
+        deleteByAge(root->leftChild, age, students);
+    } else if (age > root->age) {
+        // Traverse right subtree.
+        deleteByAge(root->rightChild, age, students);
+    } else {
+        // Node with matching age found.
+        cout << "Deleting student: " << root->name << " " << root->lastName << " " << root->age << endl;
+
+        // Remove from the vector.
+        auto it = std::remove_if(students->begin(), students->end(), [age](const s_Student& student) {
+            return student.age == age;
+        });
+        students->erase(it, students->end());
+
+        // Handle node deletion (three cases).
+
+        // Case 1: No children.
+        if (!root->leftChild && !root->rightChild) {
+            delete root;
+            root = nullptr; // Update parent's pointer.
+        }
+
+        // Case 2: One child.
+        else if (!root->leftChild) {
+            s_Student* temp = root;
+            root = root->rightChild; // Update parent's pointer.
+            delete temp;
+        } else if (!root->rightChild) {
+            s_Student* temp = root;
+            root = root->leftChild; // Update parent's pointer.
+            delete temp;
+        }
+
+        // Case 3: Two children.
+        else {
+            // Find the in-order successor (smallest in the right subtree).
+            s_Student* successor = root->rightChild;
+            while (successor->leftChild) {
+                successor = successor->leftChild;
+            }
+
+            // Replace root's data with the successor's data.
+            root->id = successor->id;
+            root->name = successor->name;
+            root->lastName = successor->lastName;
+            root->age = successor->age;
+
+            // Delete the in-order successor.
+            deleteByAge(root->rightChild, successor->age, students);
+        }
+    }
+}
+
 
 #endif
