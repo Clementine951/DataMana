@@ -20,7 +20,8 @@ int main(void) {
         cout << "4. Search by last name" << endl;
         cout << "5. Search by age" << endl;
         cout << "6. Print students" << endl;
-        cout << "7. Exit" << endl;
+        cout << "7. Remove student" << endl;
+        cout << "0. Exit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
         
@@ -55,11 +56,16 @@ int main(void) {
                 print_students(students);
                 break;
             case 7:
+                cout << "Enter the last of the students you want to remove: ";
+                cin >> lastName;
+                deleteByLastName(ROOT, lastName, students);
+                break;
+            case 0:
                 return 0;
             default:
                 cout << "Invalid choice" << endl;
         }
-    } while (choice != 7);
+    } while (choice != 0);
     
 
     return 0;
@@ -114,6 +120,10 @@ void create_new_random_student(s_Student *student, vector<s_Student> *students) 
 }
 
 void print_students(const vector<s_Student> *students) {
+    if (students->empty()) {
+        cout << "No students to print" << endl;
+        return;
+    }
     for (const s_Student &student : *students) {
         cout << "Student id: " << student.id << endl;
         cout << "Student last name: " << student.lastName << endl;
@@ -121,4 +131,5 @@ void print_students(const vector<s_Student> *students) {
         cout << "Student age: " << student.age << endl;
         cout << "----------------------" << endl;
     }
+    return;
 }

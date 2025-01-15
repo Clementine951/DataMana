@@ -64,4 +64,53 @@ void lastNameSearch(s_Student *student, string lastName){
     }
     return;
 }
+
+void deleteByLastName(s_Student *root, const string lastName, vector<s_Student> *students) {
+    if (!root) {
+        return; 
+    }
+
+    deleteByLastName(root->leftChild, lastName, students);
+    deleteByLastName(root->rightChild, lastName, students);
+
+    if (root->lastName == lastName) {
+        cout << "Deleting student: " << root->name << " " << root->lastName << " " << root->age << endl;
+
+        // No children
+        if (!root->leftChild && !root->rightChild) {
+            students->erase(students->begin() + root->id);
+            delete root;
+            root = nullptr; 
+        }
+
+        // One child
+        else if (!root->leftChild) {
+            s_Student *tmp = root;
+            root = root->rightChild; 
+            students->erase(students->begin() + root->id);
+            delete tmp;
+        } else if (!root->rightChild) {
+            s_Student *tmp = root;
+            root = root->leftChild; 
+            students->erase(students->begin() + root->id);
+            delete tmp;
+        }
+
+        // Two children
+        else {
+            s_Student *successor = root->rightChild;
+            while (successor->leftChild) {
+                successor = successor->leftChild;
+            }
+
+            root->id = successor->id;
+            root->name = successor->name;
+            root->lastName = successor->lastName;
+            root->age = successor->age;
+
+            deleteByLastName(root->rightChild, successor->lastName, students);
+        }
+    }
+}
+
 #endif
