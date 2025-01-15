@@ -17,12 +17,38 @@ typedef struct student{
 } s_Student;
 
 s_Student *ROOT = NULL;
-s_Student *student = NULL;
 vector<s_Student> *students = new vector<s_Student>;
 
 
+void idSearch(vector<s_Student>* students);
+
+/*
+    Insert student
+    params:
+        s_Student *student - pointer to student
+        int id - id of student
+    return:
+        void
+*/
+void insert_student(int id);
+
+/*
+    Create random student
+    params:
+        s_Student *student - pointer to student
+        vector<s_Student> *students - pointer to vector of students
+    return:
+        void
+*/
 void create_new_random_student(s_Student *student, vector<s_Student> *students);
 
+/*
+    Print students
+    params:
+        const vector<s_Student> *students - pointer to vector of students
+    return:
+        void
+*/
 void print_students(const vector<s_Student> *students);
 
 
