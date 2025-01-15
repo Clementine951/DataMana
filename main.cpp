@@ -1,17 +1,17 @@
 #include "main.hpp"
+#include <cstdlib>
+#include <ctime>
 
 int main(void) {
-    s_Student student;
-    vector<s_Student> students;
+    srand(time(nullptr)); 
+
    
     for (int i = 0; i < 20; i++) {
-        create_new_random_student(&student, &students);
+        create_new_random_student(student, students);
     }
     print_students(students);
 
-    
     return 0;
-
 }
 
 void create_new_random_student(s_Student *student, vector<s_Student> *students) {
@@ -21,19 +21,18 @@ void create_new_random_student(s_Student *student, vector<s_Student> *students) 
     student->name = studentNames[rand() % studentNames.size()];
     student->lastName = studentLastNames[rand() % studentLastNames.size()];
     student->age = rand() % 100 + 10;
-    int tmp = rand() % 20;
+    int tmp = 0;
     for (const s_Student &s : *students) {
         if (s.id == tmp) {
-            tmp = rand() % 20;
+            tmp = ++tmp;
         }
     }
     student->id = tmp;
     students->push_back(*student);
 }
 
-
-void print_students(const vector<s_Student> &students) {
-    for (const s_Student& student : students) {
+void print_students(const vector<s_Student> *students) {
+    for (const s_Student &student : *students) {
         cout << "Student id: " << student.id << endl;
         cout << "Student last name: " << student.lastName << endl;
         cout << "Student name: " << student.name << endl;

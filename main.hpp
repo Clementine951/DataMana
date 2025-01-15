@@ -16,10 +16,14 @@ typedef struct student{
     
 } s_Student;
 
+s_Student *ROOT = NULL;
+s_Student *student = NULL;
+vector<s_Student> *students = new vector<s_Student>;
+
 
 void create_new_random_student(s_Student *student, vector<s_Student> *students);
 
-void print_students(const vector<s_Student> &students);
+void print_students(const vector<s_Student> *students);
 
 
 
